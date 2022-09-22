@@ -1,25 +1,20 @@
-
-
 const PORT = "4999"
+const userRouter = require('./routes/user.routes')
 const express = require("express")
 const app = express()
-const mysql = require("mysql2");
+const sequelize = require('./db')
 
-const connection = mysql.createConnection({
-    host: "localhost",
-    port: "4999",
-    user: "root",
-    database: "firstDB",
-    password: "123"
-});
+app.use(express.json())
+app.use('/api', userRouter)
 
-connection.connect(function(err){
-    if (err) {
-        return console.error("Ошибка: " + err.message);
+const start = async () => {
+    try {
+        await sequelize.authenticate();
+        console.log('успешное подклюение к бд');
+        app.listen(PORT, () => console.log("сервер работает"))
+    } catch (error) {
+        console.log(error);
     }
-    else{
-        console.log("Подключение к серверу MySQL успешно установлено");
-    }
-});
+}
 
-app.listen(PORT, () => console.log("писька"))
+start();

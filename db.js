@@ -1,11 +1,13 @@
-const { Sequelize } = require('sequelize');
+const Sequelize  = require('sequelize');
 
-module.exports = new Sequelize(
-    'KvantStats',
-    'postgres',
-    'root',
-    {
+const db = new Sequelize({
+        database:'KvantStats',
+        username:'postgres',
+        password:'root',
         host: 'localhost',
         dialect: 'postgres',
-        port: '5432'
+        port: '5432',
     });
+
+module.exports = db;
+

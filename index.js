@@ -1,5 +1,5 @@
 const PORT = "4999"
-const userRouter = require('./routes/user.routes')
+const userRouter = require('./routes/certificate.routes')
 const express = require("express")
 const app = express()
 const sequelize = require('./db')
@@ -16,5 +16,6 @@ const start = async () => {
         console.log(error);
     }
 }
+
 
 start();

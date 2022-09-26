@@ -1,4 +1,4 @@
-const certificate = require('../models/certificates.js')
+const certificate = require('../models/models.js')
 class CertificateController {
     async save_certificate(req, res)
     {
@@ -8,7 +8,7 @@ class CertificateController {
             if (certificate_mb) {
                 return res.status(400).json({message: 'такой сертификат уже есть'})
             }
-            const cert = new certificate({certificate_mb})
+            const cert = new certificate({certificate_code})
             await cert.save()
             return res.json({message:'сертификат записан'})
         } catch (e) {

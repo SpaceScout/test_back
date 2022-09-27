@@ -3,12 +3,12 @@ class CertificateController {
     async save_certificate(req, res)
     {
         try {
-            const certificate_code = req.body
+            const certificate_code = "5"
             const certificate_mb = await certificate.findOne({certificate_code})
             if (certificate_mb) {
                 return res.status(400).json({message: 'такой сертификат уже есть'})
             }
-            const cert = new certificate({certificate_code})
+            const cert = new certificate({certificate_id: certificate_code})
             await cert.save()
             return res.json({message:'сертификат записан'})
         } catch (e) {

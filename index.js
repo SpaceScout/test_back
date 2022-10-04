@@ -1,13 +1,18 @@
 const PORT = "4999"
 const certificate_router = require('./routes/certificate.routes')
+const auth_router = require('./routes/auth.routes')
 const express = require("express")
 const sequelize = require('./db')
-const models = require('./models/models')
+const user_module = require('./models/user.model')
+const admin_module = require('./models/admin.model')
+const certificate_module = require('./models/cetrificate.model')
+const role_module = require('./models/role.model')
 
 const app = express()
 
 app.use(express.json())
 app.use('/api', certificate_router)
+app.use('/api', auth_router)
 
 const start = async () => {
     try {

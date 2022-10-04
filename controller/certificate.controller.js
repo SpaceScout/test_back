@@ -1,4 +1,4 @@
-const certificate = require('../models/models')
+const certificate = require('../models/cetrificate.model')
 const {Op} = require("sequelize");
 
 class CertificateController {
@@ -17,23 +17,6 @@ class CertificateController {
                 )
                 await cert.save()
                 return res.json({message:'Такой сертификат уже есть. Новый сертификат записан с цифрой ' + countPlusOnew + ' на конце'})
-
-                // for (let i = 0; i <= 100; i++){
-                //     const certificate_code2 = certificate_code + i
-                //     console.log(certificate_code2)
-                //     const certificate_mb2 = await certificate.findOne({where:{certificate_id: certificate_code2}})
-                //     if (certificate_mb2) {
-                //         continue
-                //     }
-                //     else {
-                //         const cert = new certificate(
-                //             {certificate_id: certificate_code2}
-                //         )
-                //         await cert.save()
-                //         return res.json({message:'Такой сертификат уже есть. Новый сертификат записан с цифрой ' + i + ' на конце'})
-                //         return
-                //     }
-                // }
             }
             const cert = new certificate(
                 {certificate_id: certificate_code})

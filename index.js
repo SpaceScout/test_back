@@ -12,7 +12,7 @@ const app = express()
 
 app.use(express.json())
 app.use('/api', certificate_router)
-app.use('/api', auth_router)
+app.use('/auth', auth_router)
 
 const start = async () => {
     try {

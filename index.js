@@ -1,4 +1,4 @@
-const PORT = "4999"
+
 const certificate_router = require('./routes/certificate.routes')
 const auth_router = require('./routes/auth.routes')
 const express = require("express")
@@ -7,8 +7,10 @@ const user_module = require('./models/user.model')
 const admin_module = require('./models/admin.model')
 const certificate_module = require('./models/cetrificate.model')
 const role_module = require('./models/role.model')
+const token_model = require('./models/token.model')
 
 const app = express()
+const PORT = "4999"
 
 app.use(express.json())
 app.use('/api', certificate_router)

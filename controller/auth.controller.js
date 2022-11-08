@@ -7,10 +7,9 @@ class AuthController{
         try {
             const name = req.body.name
             const password = req.body.password
-
             const userData = await userService.registration(name, password)
             console.log(userData)
-            
+            res.cookie('refreshToken', userData.refreshToken, {maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true})
             return res.status(200).json(userData)
         }catch (e){
             console.log(e)
@@ -20,7 +19,10 @@ class AuthController{
 
     async login(req, res){
         try {
-
+            const {name, password} = req.body;
+            const userData = await userService.login(name, password);
+            res.cookie('refreshToken', userData.refreshToken, {maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true})
+            return res.json(userData);
         }catch (e){
 
         }
@@ -29,10 +31,6 @@ class AuthController{
     async getUsers(req, res)
     {
         try {
-            const userRole = new Role()
-            const adminRole = new Role({value:"ADMIN"})
-            userRole.save()
-            adminRole.save()
             res.json('sozdal vse')
         }catch (e){
 

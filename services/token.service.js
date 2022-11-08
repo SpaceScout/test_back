@@ -3,8 +3,8 @@ const jwt = require('jsonwebtoken')
 
 class TokenService{
     generateTokens(payload){
-        const accessToken = jwt.sign(payload, process.env.jwt_access_secret, {expiresIn:'1m'})
-        const refreshToken = jwt.sign(payload, process.env.jwt_refresh_secret, {expiresIn:'2m'})
+        const accessToken = jwt.sign(payload, "qwer", {expiresIn:'1m'})
+        const refreshToken = jwt.sign(payload, 'qwert', {expiresIn:'2m'})
         return{
             accessToken,
             refreshToken
@@ -19,6 +19,10 @@ class TokenService{
         }
         const token = await token_model.create({userUserId:userId, refreshToken})
         return token
+    }
+
+    async removeToken(){
+        
     }
 }
 

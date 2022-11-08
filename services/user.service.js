@@ -16,9 +16,31 @@ class UserService{
             await new_user.save()
 
             const user = await user_model.findOne({where:{user_name: name}})
-            const userDto = new UserDto(name, user.user_id)
-            const tokens = tokenService.generateTokens(name)
-            return tokens
+            const userId = user.user_id 
+            const userDto = new UserDto(name, userId)
+            const tokens = tokenService.generateTokens({...userDto})
+            await tokenService.saveToken(userDto.id, tokens.refreshToken);
+            return {...tokens}
+    }
+
+    async login(name, password){
+        const user = await user_model.findOne({name})
+        if (!user) {
+            throw new Error('Пользователь с таким именем не найден')
+        }
+        if (!password){
+            throw new Error('неверный пароль')
+        }
+
+        const userDto = new UserDto(user.user_name, user.user_id);
+        const tokens = tokenService.generateTokens({...userDto});
+
+        await tokenService.saveToken(userDto.id, tokens.refreshToken);
+        return {...tokens}
+    }
+
+    async logout(refreshToken){
+        const token = await tokenService.removeToken
     }
 }
 

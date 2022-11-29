@@ -8,6 +8,7 @@ const admin_module = require('./models/admin.model')
 const certificate_module = require('./models/cetrificate.model')
 const role_module = require('./models/role.model')
 const token_model = require('./models/token.model')
+const admin_router = require('./routes/admin.routes')
 const cookieParser = require("cookie-parser")
 
 const app = express()
@@ -16,6 +17,7 @@ const PORT = "4999"
 app.use(express.json())
 app.use('/api', certificate_router)
 app.use('/auth', auth_router)
+app.use('/admin', admin_router)
 app.use(cookieParser())
 
 const start = async () => {

@@ -12,7 +12,7 @@ class AuthController{
             res.cookie('refreshToken', userData.refreshToken, {maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true})
             return res.status(200).json(userData)
         }catch (e){
-            console.log(e)
+            next(e)
         }
 
     }
@@ -24,7 +24,7 @@ class AuthController{
             res.cookie('refreshToken', userData.refreshToken, {maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true})
             return res.json(userData);
         }catch (e){
-
+            next(e)
         }
     }
 
@@ -33,7 +33,7 @@ class AuthController{
         try {
             res.json('sozdal vse')
         }catch (e){
-
+            next(e)
         }
     }
 }

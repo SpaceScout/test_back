@@ -1,12 +1,13 @@
 const user_model = require('../models/user.model')
 const tokenService = require('./token.service')
 const UserDto = require('../dtos/user.dto')
+const ApiError = require('../errors');
 
 class UserService{
     async registration(name, password){
         const candidate = await user_model.findOne({where:{user_name: name}})
             if (candidate){
-                throw new Error('пользователь с таким иенем ужеб есть')
+                throw ApiError.BadRequest('пользователь с таким именем уже есть')
             }
 
             const new_user = new user_model({
@@ -26,10 +27,10 @@ class UserService{
     async login(name, password){
         const user = await user_model.findOne({name})
         if (!user) {
-            throw new Error('Пользователь с таким именем не найден')
+            throw BadRequest('Пользователь с таким именем не найден')
         }
         if (!password){
-            throw new Error('неверный пароль')
+            throw BadRequest('неверный пароль')
         }
 
         const userDto = new UserDto(user.user_name, user.user_id);

@@ -10,6 +10,10 @@ const admin = sequelize.define("admins", {
     password: {
         type: DataTypes.STRING,
         allowNull: false
+    },
+    refreshToken:{
+        type: DataTypes.STRING,
+        allowNull: false
     }
 
 });

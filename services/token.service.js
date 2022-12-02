@@ -21,6 +21,16 @@ class TokenService{
         return token
     }
 
+    async saveAdmToken(userId, refreshToken){
+        const tokenData = await token_model.findOne({where:{userUserId:userId}})
+        if(tokenData){
+            tokenData.refreshToken = refreshToken
+            tokenData.save()
+        }
+        const token = await token_model.create({userUserId:userId, refreshToken})
+        return token
+    }
+
     async removeToken(){
         
     }

@@ -1,5 +1,7 @@
 const certificate = require('../models/cetrificate.model')
 const {Op} = require("sequelize");
+const admin_model = require('../models/admin.model')
+const toker_service = require('../services/token.service')
 
 class adminController {
     async new_certificate(req, res)
@@ -27,7 +29,23 @@ class adminController {
             res.status(400).json({message: 'Ошибка в регистрации сертификата'})
         }
     }
-    //всего 1 админ. логин и пароль хранить в бд
+
+    async login(name, password){
+        const user = await admin_model.findOne({name})
+        if (!user) {
+            throw BadRequest('Админ с таким именем не найден')
+        }
+        if (!password){
+            throw BadRequest('Неверный пароль')
+        }
+
+        const userDto = new UserDto(user.user_name, user.user_id);
+        const tokens = tokenService.generateTokens({...userDto});
+
+        await tokenService.saveToken(userDto.id, tokens.refreshToken);
+        return {...tokens}
+    }
 }
+
 
 module.exports = new adminController()

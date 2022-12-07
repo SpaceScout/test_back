@@ -1,8 +1,5 @@
-const user_model = require('../models/user.model')
-const role_model = require('../models/role.model')
-const jwt = require('jsonwebtoken')
-const token_model = require('../models/token.model')
 const userService = require('../services/user.service')
+const tokenService = require('../services/token.service')
 
 class AuthController{
     async registration(req, res)
@@ -11,33 +8,32 @@ class AuthController{
             const name = req.body.name
             const password = req.body.password
             const userData = await userService.registration(name, password)
-            //res.cookie('refreshToken', userData.refreshToken, {maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true})
             console.log(userData)
-            return res.json(userData);
+            res.cookie('refreshToken', userData.refreshToken, {maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true})
+            return res.status(200).json(userData)
         }catch (e){
-            console.log(e)
+            next(e)
         }
 
     }
 
     async login(req, res){
         try {
-
+            const {name, password} = req.body;
+            const userData = await userService.login(name, password);
+            res.cookie('refreshToken', userData.refreshToken, {maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true})
+            return res.json(userData);
         }catch (e){
-
+            next(e)
         }
     }
 
     async getUsers(req, res)
     {
         try {
-            const userRole = new Role()
-            const adminRole = new Role({value:"ADMIN"})
-            userRole.save()
-            adminRole.save()
             res.json('sozdal vse')
         }catch (e){
-
+            next(e)
         }
     }
 }

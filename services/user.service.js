@@ -1,30 +1,48 @@
 const user_model = require('../models/user.model')
-const token_service = require('../services/token.service') 
-const UserDto = require('../dtos/user.dto');
+const tokenService = require('./token.service')
+const UserDto = require('../dtos/user.dto')
+const ApiError = require('../errors');
 
-class UserService {
-    async registration(name, password) {
+class UserService{
+    async registration(name, password){
         const candidate = await user_model.findOne({where:{user_name: name}})
-        console.log(candidate)
-        if (candidate) {
-            throw new Error(`Пользователь ${name} уже существует`)
-        }
+            if (candidate){
+                throw ApiError.BadRequest('пользователь с таким именем уже есть')
+            }
 
-        const user = new user_model(
-            {user_name: name, 
-            user_password: password})
-        await user.save()
+            const new_user = new user_model({
+                user_name: name,
+                user_password: password
+            })
+            await new_user.save()
 
-
-        const user2 = await user_model.findOne({name})
-        const userId = user2.user_id
-        const userDto = new UserDto(name, userId);
-        const tokens = token_service.generateTokens({...userDto});
-        console.log(userDto.id)
-        await token_service.saveToken(userDto.id, tokens.refreshToken);
-        return {...tokens, userDto}
+            const user = await user_model.findOne({where:{user_name: name}})
+            const userId = user.user_id 
+            const userDto = new UserDto(name, userId)
+            const tokens = tokenService.generateTokens({...userDto})
+            await tokenService.saveToken(userDto.id, tokens.refreshToken);
+            return {...tokens}
     }
 
+    async login(name, password){
+        const user = await user_model.findOne({name})
+        if (!user) {
+            throw BadRequest('Пользователь с таким именем не найден')
+        }
+        if (!password){
+            throw BadRequest('неверный пароль')
+        }
+
+        const userDto = new UserDto(user.user_name, user.user_id);
+        const tokens = tokenService.generateTokens({...userDto});
+
+        await tokenService.saveToken(userDto.id, tokens.refreshToken);
+        return {...tokens}
+    }
+
+    async logout(refreshToken){
+        const token = await tokenService.removeToken
+    }
 }
 
-module.exports = new UserService();
+module.exports = new UserService

@@ -2,6 +2,7 @@ const certificate = require('../models/cetrificate.model')
 const {Op} = require("sequelize");
 const admin_model = require('../models/admin.model')
 const toker_service = require('../services/token.service')
+const UserDto = require('../dtos/user.dto')
 
 class adminController {
     async new_certificate(req, res)
@@ -30,20 +31,28 @@ class adminController {
         }
     }
 
-    async login(name, password){
-        const user = await admin_model.findOne({name})
-        if (!user) {
-            throw BadRequest('Админ с таким именем не найден')
-        }
-        if (!password){
-            throw BadRequest('Неверный пароль')
-        }
+    async login(req, res)
+    {
+        try{
+            const name = req.body.login
+            const password = req.body.password
+            const adm = await admin_model.findOne({where:{login: name}})
+            if (!adm) {
+                res.status(400).json({message: 'Ошибк в имени'})
+            }
+            if (!password){
+                res.status(400).json({message: 'Ошибк в пароле'})
+            }
+            // const userDto = new UserDto(login, "1");
+            // const tokens = toker_service.generateTokens({...userDto});
 
-        const userDto = new UserDto(user.user_name, user.user_id);
-        const tokens = tokenService.generateTokens({...userDto});
-
-        await tokenService.saveToken(userDto.id, tokens.refreshToken);
-        return {...tokens}
+            // console.log(tokens)
+            // await toker_service.saveToken(userDto.id, tokens.refreshToken);
+            res.status(200).json({message:'успешный вход'})
+        } catch (e) {
+            console.log(e)
+            res.status(400).json({message: 'Ошибк'})
+        }
     }
 }
 

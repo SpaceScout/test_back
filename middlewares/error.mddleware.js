@@ -1,10 +1,18 @@
-const ApiError = require('../errors');
+module.exports = class ApiError extends Error {
+    status;
+    errors;
 
-module.exports = function(error, req, res, next){
-    console.log (error)
-    if(error instanceof ApiError){
-        return res.status(error.status).json({message: error.message, error: error.errors})
+    constructor(status, message, errors = []) {
+        super(message);
+        this.status = status;
+        this.errors = errors;
     }
 
-    return res.status(500).json({message:'непредпиденная ошибка'})
+    static UnauthorizedError() {
+        return new ApiError(401, 'Пользователь не авторизован')
+    }
+
+    static BadRequest(message, errors = []) {
+        return new ApiError(400, message, errors);
+    }
 }

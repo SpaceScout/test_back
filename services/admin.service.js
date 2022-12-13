@@ -1,12 +1,11 @@
 const certificate = require('../models/cetrificate.model')
-const {Op} = require("sequelize");
 const admin_model = require('../models/admin.model')
-const toker_service = require('../services/token.service')
+const token_service = require('../services/token.service')
 const UserDto = require('../dtos/user.dto')
 
 class AdminService{
-    async login(name, password){
-        const adm = await admin_model.findOne({name})
+    async login(login, password){
+        const adm = await admin_model.findOne({login})
         console.log(adm)
         if (!adm) {
             res.status(400).json({message: 'Ошибк в имени'})
@@ -43,4 +42,4 @@ class AdminService{
     }
 }
 
-module.export = new AdminService()
+module.export = new AdminService

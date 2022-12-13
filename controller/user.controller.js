@@ -1,0 +1,15 @@
+const userhService = require('../services/user.service')
+
+class userController{
+    async getUser(req, res){
+        try {
+            id = req.body.id
+            const userData = userhService.getUser(id)
+            res.status(200).json(userData)
+        }catch (e){
+            next(e)
+        }
+    }
+}
+
+module.exports = new userController()

@@ -1,6 +1,6 @@
-const adminService = require('../services/admin.service')
+const AdminService = require('../services/admin.service')
 
-class adminController {
+class AdminController {
     async new_certificate(req, res)
     {
         try {
@@ -17,8 +17,8 @@ class adminController {
     async login(req, res)
     {
         try{
-            const {name, password} = req.body
-            const admData = await adminService.logiin(name, password);
+            const {login, password} = req.body
+            const admData = await AdminService.login(login, password);
             return res.json(admData);
         } catch (e) {
             console.log(e)
@@ -28,4 +28,4 @@ class adminController {
 }
 
 
-module.exports = new adminController()
+module.exports = new AdminController()

@@ -3,7 +3,7 @@ module.exports = class ApiError extends Error {
     error;
 
     constructor(status, message, errors = []) {
-        this.message = message
+        super(message)
         this.status = status
         this.errors = errors
     }
@@ -13,6 +13,6 @@ module.exports = class ApiError extends Error {
     }
     
     static BadRequest(message, errors = []) {
-        return new ApiError(400, message, errors)``
+        return new ApiError(400, message, errors)
     }
 }

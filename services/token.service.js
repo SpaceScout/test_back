@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken')
 
 class TokenService{
     generateTokens(payload){
-        const accessToken = jwt.sign(payload, "qwer", {expiresIn:'1m'})
+        const accessToken = jwt.sign(payload, "qwer", {expiresIn:'3m'})
         const refreshToken = jwt.sign(payload, 'qwert', {expiresIn:'2m'})
         return{
             accessToken,
@@ -37,7 +37,9 @@ class TokenService{
 
     validateAccessToken(token) {
         try {
-            const userData = jwt.verify(token, process.env.JWT_ACCESS_SECRET);
+            console.log(token)
+            //process.env.JWT_ACCESS_SECRET
+            const userData = jwt.verify(token, "qwer");
             return userData;
         } catch (e) {
             return null;
@@ -46,7 +48,8 @@ class TokenService{
 
     validateRefreshToken(token) {
         try {
-            const userData = jwt.verify(token, process.env.JWT_REFRESH_SECRET);
+            //process.env.JWT_REFRESH_SECRET
+            const userData = jwt.verify(token, 'qwer');
             return userData;
         } catch (e) {
             return null;

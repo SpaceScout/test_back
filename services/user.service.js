@@ -6,7 +6,8 @@ class UserService{
     async getUser(id){
         try {
             const user = user_model.findOne(id)
-            return user
+            console.log(user)
+            return {user}
         }catch (e){
             console.log('ошиииибка')
         }

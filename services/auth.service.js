@@ -4,33 +4,33 @@ const UserDto = require('../dtos/user.dto')
 const ApiError = require('../errors');
 
 class UserService{
-    async registration(name, password){
-        const candidate = await user_model.findOne({where:{user_name: name}})
+    async registration(login, password){
+        const candidate = await user_model.findOne({where:{user_name: login}})
             if (candidate){
                 throw ApiError.BadRequest('пользователь с таким именем уже есть')
             }
 
             const new_user = new user_model({
-                user_name: name,
+                user_name: login,
                 user_password: password
             })
             await new_user.save()
 
-            const user = await user_model.findOne({where:{user_name: name}})
+            const user = await user_model.findOne({where:{user_name: login}})
             const userId = user.user_id 
-            const userDto = new UserDto(name, userId)
+            const userDto = new UserDto(login, userId)
             const tokens = tokenService.generateTokens({...userDto})
             await tokenService.saveToken(userDto.id, tokens.refreshToken);
             return {...tokens}
     }
 
-    async login(name, password){
-        const user = await user_model.findOne({name})
+    async login(login, password){
+        const user = await user_model.findOne({where:{user_name: login}})
         if (!user) {
-            throw BadRequest('Пользователь с таким именем не найден')
+            throw ApiError.BadRequest('Пользователь с таким именем не найден')
         }
         if (!password){
-            throw BadRequest('неверный пароль')
+            throw ApiError.BadRequest('Пользователь с таким именем не найден')
         }
 
         const userDto = new UserDto(user.user_name, user.user_id);

@@ -1,10 +1,10 @@
-const userhService = require('../services/user.service')
+const userService = require('../services/user.service')
 
 class userController{
-    async getUser(req, res){
+    async getUser(req, res, next){
         try {
-            id = req.body.id
-            const userData = userhService.getUser(id)
+            const id = req.body.id
+            const userData = userService.getUser(id)
             res.status(200).json(userData)
         }catch (e){
             next(e)

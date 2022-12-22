@@ -2,6 +2,7 @@ const user_model = require('../models/user.model')
 const tokenService = require('./token.service')
 const UserDto = require('../dtos/user.dto')
 const ApiError = require('../errors');
+const bcrypt = require('bcrypt')
 
 class UserService{
     async registration(login, password){
@@ -10,9 +11,10 @@ class UserService{
                 throw ApiError.BadRequest('пользователь с таким именем уже есть')
             }
 
+            const hashPassword = bcrypt.hashSync(password, 5)
             const new_user = new user_model({
                 user_name: login,
-                user_password: password
+                user_password: hashPassword
             })
             await new_user.save()
 
@@ -31,6 +33,11 @@ class UserService{
         }
         if (!password){
             throw ApiError.BadRequest('Пользователь с таким именем не найден')
+        }
+
+        const validPassword = bcrypt.compareSync(password, user.user_password)
+        if(!validPassword){
+            throw ApiError.BadRequest('Неправильный пароль')
         }
 
         const userDto = new UserDto(user.user_name, user.user_id);

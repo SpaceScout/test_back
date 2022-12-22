@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken')
 class TokenService{
     generateTokens(payload){
         const accessToken = jwt.sign(payload, "qwer", {expiresIn:'3m'})
-        const refreshToken = jwt.sign(payload, 'qwert', {expiresIn:'2m'})
+        const refreshToken = jwt.sign(payload, 'qwert', {expiresIn:'3m'})
         return{
             accessToken,
             refreshToken

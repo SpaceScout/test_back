@@ -1,11 +1,12 @@
-const AdminService = require('../services/admin.service')
+const adminService = require('../services/admin.service')
 
 class AdminController {
     async new_certificate(req, res)
     {
         try {
-            const certificate_code = req.body.certificate_code
-            const cert = await adminService.new_certificate(certificate_code)
+            const release_date = req.body.release_date
+            const FIO = req.body.FIO
+            const cert = await adminService.new_certificate(release_date, FIO)
             console.log(cert)
             return res.status(200).json(cert)
         } catch (e) {

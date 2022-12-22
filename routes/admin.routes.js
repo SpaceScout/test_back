@@ -3,7 +3,8 @@ const router = new Router()
 const AdminController = require('../controller/admin.controller')
 const authMiddleware = require('../middlewares/auth.middleware')
 
-router.post('/new_certificate', authMiddleware, AdminController.new_certificate)
+//, authMiddleware
+router.post('/new_certificate', AdminController.new_certificate)
 router.post('/login', AdminController.login)
 
 module.exports = router
